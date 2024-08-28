@@ -173,7 +173,7 @@ interface IPaymentChange {
 `constructor(container: HTMLElement, actions?: IActions)` - DOM элемент карточки и её действия \
 
 Поля:
-- _id - id товара,
+- _id товара,
 - _image - изображение товара,
 - _title - название товара,
 - _category - категория товара,
@@ -264,7 +264,6 @@ interface IPaymentChange {
 - setAddEventListeners - слушатель кнопок выбора оплаты и ввода адреса доставки,
 - handleMethodCard - выбор оплаты карточкой,
 - handleMethodCash - выбор оплаты наличными,
-- handleAddressInput - ввод адреса доставки,
 - handlePayment - переключение активности кнопок выбора способа оплаты,
 - updateButtonState - обновление состояния кнопки при условии ввода(выбора) данных,
 - clearForm - очистка формы оформления заказа.
@@ -279,10 +278,7 @@ interface IPaymentChange {
 - _phone - поле ввода номера телефона.
 
 Методы:
-- setAddEventListeners - слушатель полей ввода на форме,
 - updateButtonState - состояние активности кнопки на форме,
-- handleEmailInput - ввод электронной почты,
-- handlePhoneInput - ввод номера телефона,
 - handleSubmit - событие отправки формы.
 
 #### Класс `Success`
@@ -318,6 +314,7 @@ interface IPaymentChange {
 - `card:select` - выбор карточки для отображения в модальном окне
 - `card:add` - добавление товара в корзину,
 - `card:remove` - удаление товара из корзины,
+- `basket:changed` - изменение списка товаров в корзине,
 - `basket:open` - открытие окна корзины,
 - `order:open` - открытие формы order,
 - `card:remove` - изменение товаров в корзине,

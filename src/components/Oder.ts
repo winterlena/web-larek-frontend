@@ -21,7 +21,6 @@ export class OrderForm extends Form<IOrder> {
 	setAddEventListeners() {
 		this._paymentCard.addEventListener('click',this.handleMethodCard.bind(this));
 		this._paymentCash.addEventListener('click',this.handleMethodCash.bind(this));
-		this._inputAdress.addEventListener('input',this.handleAddressInput.bind(this));
 		
 		this.updateButtonState();
 	}
@@ -32,10 +31,6 @@ export class OrderForm extends Form<IOrder> {
 
 	handleMethodCash() {
 		this.handlePayment('cash', this._paymentCash, 'paymentCash:changed', this._paymentCard);
-	}
-
-	handleAddressInput() {
-		this.onInputChange('address', this._inputAdress.value);
 	}
 
 	handlePayment(method: string, currentButton: HTMLButtonElement, eventName: string, otherButton: HTMLButtonElement) {

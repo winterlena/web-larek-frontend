@@ -39,10 +39,16 @@ const appState = new AppState({},events);
 // Глобальные контейнеры
 const page = new Page(ensureElement<HTMLElement>('.page'), events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
+const success = new Success(cloneTemplate(successTemplate),events);
 
 // Переиспользуемые части интерфейса
 const order = new OrderForm(cloneTemplate(orderTemplate), events);
 const contact = new ContactForm(cloneTemplate(contactsTemplate), events);
+const basket = new Basket(cloneTemplate(basketTemplate), {
+	onClick: () => {
+		events.emit('order:open');
+	},
+});
 
 // Дальше идет бизнес-логика
 // Поймали событие, сделали что нужно
@@ -105,19 +111,13 @@ events.on('card:add', (item: ICard) => {
 events.on('card:remove', (item: ICard) => {
 	appState.removeFromBasket(item);
 	page.counter = appState.getBasket().length;
-	events.emit('basket:open', item);
+	events.emit('basket:changed', item);
 });
 
 // Открыть корзину с товарами
-events.on('basket:open', () => {
+events.on('basket:changed', () => {
 	appState.setOrderField('items', []);
 	appState.setOrderField('total', 0);
-
-	const basket = new Basket(cloneTemplate(basketTemplate), {
-		onClick: () => {
-			events.emit('order:open');
-		},
-	});
 
 	const arrayFromBasket = appState.getBasket();
 	const cardBasketElements = arrayFromBasket.map((item, index) => {
@@ -143,6 +143,11 @@ events.on('basket:open', () => {
 		basket.buttonDisable(true);
 	}
 });
+
+// Открытие корзины
+events.on('basket:open', () => {
+	modal.render({ content: basket.render({}) });
+  });
 
 // Оформление покупки: выбор способа оплаты и ввод адреса доставки
 events.on('order:open', () => {
@@ -214,7 +219,6 @@ events.on('contact:submit', () => {
 	api
 		.orderItems(appState.order as IOrder)
 		.then((res) => {
-			const success = new Success(cloneTemplate(successTemplate),events);
 			success.description = `Списано: ${res.total} синапсов`;
 			modal.render({ content: success.render() });
 			console.log(res);
